@@ -89,6 +89,11 @@ Available options are 'primary/secondary/arbiter/hidden'"
         print_validation_error "$error_message"
     fi
 
+    if ! is_boolean_yes "$ALLOW_EMPTY_PASSWORD" && [[ -n "$MONGODB_METRICS_USERNAME" ]] && [[ -z "$MONGODB_METRICS_PASSWORD" ]]; then
+        error_message="The MONGODB_METRICS_PASSWORD environment variable is empty or not set. Set the environment variable ALLOW_EMPTY_PASSWORD=yes to allow the container to be started with blank passwords. This is only recommended for development."
+        print_validation_error "$error_message"
+    fi
+
     [[ "$error_code" -eq 0 ]] || exit "$error_code"
 }
 
